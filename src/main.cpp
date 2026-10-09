@@ -22,7 +22,7 @@ int main() {
     arr.print();
     cout << "arr.get(2) = " << arr.get(2) << "\n";
 
-    std::cout << "Task 2\n";
+    cout << "Task 2\n";
     DynamicArray copyArr(arr);
     cout << "Copy of the array: ";
     copyArr.print();
@@ -63,14 +63,14 @@ int main() {
     try {
         arr.get(100);
     } catch (const out_of_range& e) {
-        cout << "Caught std::out_of_range: " << e.what() << "\n";
+        cerr << "Caught std::out_of_range: " << e.what() << "\n";
     }
     
     cout << "std::invalid_argument (value outside [-100, 100])\n";
     try {
         arr.set(0, 500);
     } catch (const invalid_argument& e) {
-        cout << "Caught std::invalid_argument: " << e.what() << "\n";
+        cerr << "Caught std::invalid_argument: " << e.what() << "\n";
     }
 
     cout << "std::bad_alloc (allocation failure)\n";
@@ -79,7 +79,7 @@ int main() {
         int* raw = new int[hugeElem];
         delete[] raw;
     } catch (const bad_alloc& e) {
-        cout << "Caught std::bad_alloc " << e.what() << "\n";
+        cerr << "Caught std::bad_alloc " << e.what() << "\n";
     }
 
     return 0;
