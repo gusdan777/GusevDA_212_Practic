@@ -12,6 +12,7 @@ class DynamicArray {
 private:
     T* data;
     int size;
+    int capacity;
     static const int MIN_VALUE = -100;
     static const int MAX_VALUE = 100;
  
@@ -33,7 +34,8 @@ public:
             throw invalid_argument("size cannot be negative");
         }
         this->size = size;
-        data = new T[this->size]();
+        this->capacity = size;
+        data = new T[this->capacity]();
     }
  
     ~DynamicArray() {
@@ -70,7 +72,8 @@ public:
  
     DynamicArray(const DynamicArray& other) {
         size = other.size;
-        data = new T[size];
+        capacity = other.size;
+        data = new T[capacity];
         for (int i = 0; i < size; ++i) {
             data[i] = other.data[i];
         }
@@ -80,13 +83,17 @@ public:
         if (!isValueInRange(value)) {
             throw invalid_argument("value is out of range [-100, 100]");
         }
-        T* newData = new T[size + 1];
-        for (int i = 0; i < size; ++i) {
-            newData[i] = data[i];
+        if (size == capacity) {
+            int newCapacity = (capacity == 0) ? 1 : capacity * 2;
+            T* newData = new T[newCapacity]();
+            for (int i = 0; i < size; ++i) {
+                newData[i] = data[i];
+            }
+            delete[] data;
+            data = newData;
+            capacity = newCapacity;
         }
-        newData[size] = value;
-        delete[] data;
-        data = newData;
+        data[size] = value;
         size = size + 1;
     }
  
@@ -105,7 +112,7 @@ public:
     }
  
     int getSize() const {
-        return size;
+        return capacity;
     }
 };
  
