@@ -79,6 +79,47 @@ public:
         }
     }
  
+    // Часть 5, задание 1: оператор присваивания (копирование)
+    DynamicArray& operator=(const DynamicArray& other) {
+        if (this == &other) {
+            return *this;
+        }
+        T* newData = new T[other.size];
+        for (int i = 0; i < other.size; i++) {
+            newData[i] = other.data[i];
+        }
+        delete[] data;
+        data = newData;
+        size = other.size;
+        capacity = other.size;
+        return *this;
+    }
+
+    // Часть 5, задание 2: move-конструктор
+    DynamicArray(DynamicArray&& other) noexcept {
+        data = other.data;
+        size = other.size;
+        capacity = other.capacity;
+        other.data = nullptr;
+        other.size = 0;
+        other.capacity = 0;
+    }
+
+    // Часть 5, задание 3: move-оператор присваивания
+    DynamicArray& operator=(DynamicArray&& other) noexcept {
+        if (this == &other) {
+            return *this;
+        }
+        delete[] data;
+        data = other.data;
+        size = other.size;
+        capacity = other.capacity;
+        other.data = nullptr;
+        other.size = 0;
+        other.capacity = 0;
+        return *this;
+    }
+
     void pushBack(const T& value) {
         if (!isValueInRange(value)) {
             throw invalid_argument("value is out of range [-100, 100]");
@@ -115,6 +156,7 @@ public:
         return size;
     }
 
+    // Часть 4, задание 1: operator[]
     T& operator[](int index) {
         if (!isIndexValid(index)) {
             throw out_of_range("index " + to_string(index) + " is out of bounds");
@@ -122,6 +164,7 @@ public:
         return data[index];
     }
 
+    // Часть 4, задание 2: сравнение
     bool operator==(const DynamicArray& other) const {
         if (size != other.size) {
             return false;
@@ -138,6 +181,7 @@ public:
         return !(*this == other);
     }
 
+    // Часть 4, задание 3: += и -=
     DynamicArray& operator+=(const DynamicArray& other) {
         add(other);
         return *this;
@@ -162,6 +206,7 @@ public:
         return *this;
     }
 
+    // Часть 4, задание 4: итераторы
     T* begin() {
         return data;
     }
